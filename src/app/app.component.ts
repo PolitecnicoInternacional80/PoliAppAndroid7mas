@@ -22,7 +22,7 @@ import { EvaluacionPage } from '../pages/evaluacion/evaluacion';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = NotasPage;
+  rootPage: any = LoginPage;
   inicioInactividad;
   inactivo:boolean=false;
 
