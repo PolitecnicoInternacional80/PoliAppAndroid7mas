@@ -11,8 +11,9 @@
     <div>
       <button ion-button round color="1" (click)="loginFacebook()">Login con facebook</button>
       <h2>El correo de la red social Facebook con el que ingresará, debe ser el mismo que tiene registrado en la institución.
-      <br>Para actualizar su correo diríjase a registro y control de su sede.   
-      </h2>     
+        <br>Para actualizar su correo diríjase a registro y control de su sede o use el siguiente link        
+        </h2>
+        <h3><a href="https://goo.gl/forms/kayl7Ze5I1ZaVv493">Actualizar correo</a></h3>   
       <ion-item *ngIf="showUser">
       <ion-avatar item-left>
       <img [src]="userFB.picture.data.url" alt="">
