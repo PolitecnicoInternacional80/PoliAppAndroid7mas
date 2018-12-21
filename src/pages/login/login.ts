@@ -5,6 +5,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from '@ionic-native/facebook';
 import { Storage } from '@ionic/storage';
 
+/** Para usar el plugin GooglePlus en necesario hacer la configuración en la consola de desarrolladores de Google
+ * con la cuenta de Gmail que quede asociada a la aplicación, después de que se tenga el numeró de reserva, 
+ * ahí si se puede realizar la instalación del plugin -> https://ionicframework.com/docs/native/google-plus/ 
+*/
+import { GooglePlus } from '@ionic-native/google-plus';
+
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 /**
@@ -32,10 +38,13 @@ export class LoginPage {
   /**Variable para almacenar los datos del usuario de facebook */
   userFB: any = {};
   showUser: boolean = false;
+  /**Variable para almacenar la respuesta de google*/  
+  userGoogle: any ={};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private authProvider: AuthServiceProvider,
               public alertCtrl: AlertController, public loadingCtrl: LoadingController, private menu: MenuController, 
-              public splashScreen:SplashScreen, public facebook:Facebook, public storage:Storage) {
+              public splashScreen:SplashScreen, public facebook:Facebook, public storage:Storage,
+              private googlePlus: GooglePlus) {
     this.splashLogin();    
     this.menu.enable(false);     
   }
@@ -57,7 +66,9 @@ export class LoginPage {
     this.splashScreen.hide();
     this.storage.remove('sesionUser');
     this.storage.remove('userFB');
+    this.storage.remove('userGoogle');
     this.facebook.logout().catch(err=>console.log(err));
+    this.googlePlus.logout().catch(err=>console.log(err));
   }
 
   ionViewDidLeave(){
@@ -88,6 +99,15 @@ export class LoginPage {
     .catch(error =>{
       console.error( error );
     }).then(()=>{this.ingresar(this.userFB.email);}).catch(err=>console.log(err));
+  }
+
+  // Este método solo requiere que se realice la instalación del plugin, ya funciona para iniciar sesión
+  loginGoogle(){
+    this.userGoogle={};
+    this.googlePlus.login({})
+    .then(res => {this.userGoogle=res;})
+    .catch(err => console.error(err))
+    .then(()=>{this.ingresar(this.userGoogle.email);}).catch(err=>console.log(err));
   }
 
   ingresar(userEmail){
@@ -144,7 +164,8 @@ export class LoginPage {
     console.log('Metood redirigir: EstadoAcceso es '+this.estadoAcceso);
     if(this.estadoAcceso){
       this.storage.set('sesionUser', this.arrayDatos);
-      this.storage.set('userFB', this.userFB);
+      if(this.userFB){ this.storage.set('userFB', this.userFB); }
+      if(this.userGoogle){ this.storage.set('userGoogle', this.userGoogle)}  
       this.navCtrl.setRoot(HomePage, {key2:this.arrayDatos});
     }else{
       if(this.estadoAcceso==false){

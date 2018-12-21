@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { Facebook } from '@ionic-native/facebook';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { IonicStorageModule } from '@ionic/storage';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -67,7 +68,8 @@ import { SoapProvider } from '../providers/soap/soap';
     AuthServiceProvider,
     SoapProvider,
     Facebook,
-    BackgroundMode
+    BackgroundMode,
+    GooglePlus
   ]
 })
 export class AppModule {}
